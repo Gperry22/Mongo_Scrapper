@@ -1,0 +1,34 @@
+{
+  "name": "mongo_scrapper",
+  "version": "1.0.0",
+  "description": "Mongo Scapper App",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gperry22/Mongo_Scrapper.git"
+  },
+  "keywords": [
+    "Mongo",
+    "Scrapper",
+    "Cheerio"
+  ],
+  "author": "Gabe Perry",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gperry22/Mongo_Scrapper/issues"
+  },
+  "homepage": "https://github.com/Gperry22/Mongo_Scrapper#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.2",
+    "cheerio": "^1.0.0-rc.2",
+    "express": "^4.16.3",
+    "jade": "^1.11.0",
+    "mongoose": "^5.0.13",
+    "pug": "^2.0.3",
+    "request": "^2.85.0"
+  }
+}
