@@ -6,18 +6,27 @@ $(document).ready(function () {
 
 
 
-            $.ajax("/api/scrape", {
-                type: "GET",
-     
-            }).then(function (scrape) {
-                console.log(scrape);
-            })
+        $.ajax("/api/scrape", {
+            type: "GET",
+        }).then(function (dbArticle) {
+            // console.log(dbArticle);
+            console.log("Now Getting All Articles");
+            getAllArticles();
+        })
     })
-
-
-
-
 })
+
+
+
+function getAllArticles() {
+    $.ajax("/articles", {
+        type: "GET",
+    }).then(function (dbArticle) {
+        // console.log(dbArticle);
+        console.log(dbArticle);
+    })
+}
+
 
 
 // test(1, function(data){
