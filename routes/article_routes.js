@@ -43,10 +43,11 @@ router.get("/api/scrape", function (req, res) {
                     // View the added result in the console
                     // res.send(dbArticle)
                     console.log(dbArticle);
+                    res.json(dbArticle);
                 })
                 .catch(function (err) {
                     // If an error occurred, send it to the client
-                    return res.json(err);
+                    res.json(err);
                 });
         });
 
