@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 $(document).ready(function() {
 
 
@@ -45,36 +44,6 @@ $(document).ready(function() {
             }
             
         }
-=======
-$(document).ready(function () {
-
-
-    $("#scrape").on("click", function (event) {
-        event.preventDefault();
-
-
-
-        $.ajax("/api/scrape", {
-            type: "GET",
-        }).then(function (dbArticle) {
-            // console.log(dbArticle);
-            console.log("Now Getting All Articles");
-            getAllArticles();
-        })
-    })
-})
-
-
-
-function getAllArticles() {
-    $.ajax("/articles", {
-        type: "GET",
-    }).then(function (dbArticle) {
-        // console.log(dbArticle);
-        console.log(dbArticle);
-    })
-}
->>>>>>> 88eb12047e9a55b0db0d390752048dedfbf90575
 
 
     });
