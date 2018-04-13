@@ -28,32 +28,23 @@ $(document).ready(function() {
                 let input = "Save Article";
                 // let notebtn = "<button onclick=addNote(" + id + ") class='btn btn-primary'> Add Note </button>";
                 // let delbtn  = "<button onclick=delete(" + id + ") class='btn btn-danger'> Delete </button>";
-                let saveArticle = "<button onclick='saveTheArticle()' class='btn btn-danger'>" + input + "</button>";
-          
-             
-                $("#articles").append(`
-                
-                <div class="col-md-9 artbg text-center">
-                    <h5>
-                    ${title}
-                    </h5>
-                    <a href="${link}" target="_blank">${link}</a>
-                </div>
-                <div class="col-md-3 artbg text-center align-middle">
-                    ${saveArticle}
-
-                </div>
-                    
-`);
-
-           
-            }
-            
-        }
-
-
-    });
-  }
+                let saveArticle = "<button onclick=saveTheArticle(" + id + ") class='btn btn-danger'>Save Article</button>";                     
+                  $("#articlesss").append(`                
+                      <div class="col-md-9 artbg text-center">
+                        <h5>
+                        ${title}
+                        </h5>
+                        <a href="${link}" target="_blank">${link}</a>
+                      </div>
+                      <div class="col-md-3 artbg text-center align-middle">
+                        ${saveArticle}
+                        <button onclick="saveTheArticle2()" class='btn btn-danger'>HELLO</button>
+                      </div>                   
+                    `);           
+                }           
+             }
+          });
+    }
 
   $("#home").on("click", function (event) {
     event.preventDefault();
@@ -62,23 +53,14 @@ $(document).ready(function() {
 
   function saveTheArticle() {
     console.log("HOLA");
-
   }
 
 
+  function saveTheArticle2() {
+    console.log("HOLA");
+  }
 
-// function saveArticle(id){
-//   console.log(id);
-  
-//   $.ajax("/save/" + id, {
-//     type: "POST",
-//     data: id
-//   }).then(function (scrape) {
-//     console.log(scrape);
-//     // getScrapedArticles();
-//   });
 
-// }
 
 
 });
@@ -93,3 +75,18 @@ $(document).ready(function() {
 //   });
 
 // <button type="submit" onclick="saveTheArticle(${id})" class="btn btn-danger">Save Article</button>
+
+
+
+// function saveArticle(id){
+//   console.log(id);
+
+//   $.ajax("/save/" + id, {
+//     type: "POST",
+//     data: id
+//   }).then(function (scrape) {
+//     console.log(scrape);
+//     // getScrapedArticles();
+//   });
+
+// }
