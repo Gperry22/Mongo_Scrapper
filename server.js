@@ -29,7 +29,7 @@ app.set("view engine", "jade");
 app.set("views", __dirname + "/views");
 
 app.use(express.static("nodules/bootstrap/dist"));
-
+ 
 var articles = require("./routes/article_routes.js");
 app.use(articles);
 

@@ -2,11 +2,15 @@
 extends layout
 //importing everything below into block content1 on layout.jade ===================================
 block content1
-      .container
-            .row
-              .col-md-2
-                h1 HI Gabe
-                button#scrape.btn.btn-primary CLCK ME To Scrape
+  .row.navbg
+    .container
+            button#scrape.btn.btn-primary Scrape Articles
+            button.btn.btn-primary.marleft Saved Articles
+  img(src='images/newspaper2.jpg', alt='newspaper background').bgsize
+  .container
+    //- img(src='images/newspaper2.jpg', alt='newspaper background').bgsize.marbtn
+    .row#articles
+
 
 
 

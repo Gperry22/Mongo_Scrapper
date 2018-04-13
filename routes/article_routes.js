@@ -3,6 +3,7 @@ var _ = require("lodash");
 var db = require("../models");
 var cheerio = require("cheerio");
 var axios = require("axios");
+var request = require("request");
 
 
 var router = express.Router();
@@ -17,7 +18,6 @@ router.get("/", function (req, res) {
 
 // A GET route for scraping the echojs website
 router.get("/api/scrape", function (req, res) {
-    console.log("#####$%$W%^###@@%@#%@#$#@%^#&#&$");
     
     // First, we grab the body of the html with request
     axios.get("http://www.echojs.com/").then(function (response) {
@@ -41,6 +41,7 @@ router.get("/api/scrape", function (req, res) {
             db.Article.create(result)
                 .then(function (dbArticle) {
                     // View the added result in the console
+                    // res.send(dbArticle)
                     console.log(dbArticle);
                 })
                 .catch(function (err) {
@@ -55,7 +56,7 @@ router.get("/api/scrape", function (req, res) {
 });
 
 // Route for getting all Articles from the db
-router.get("/articles", function (req, res) {
+router.get("/api/articles", function (req, res) {
     // Grab every document in the Articles collection
     db.Article.find({})
         .then(function (dbArticle) {
@@ -104,7 +105,7 @@ router.post("/articles/:id", function (req, res) {
         });
 });
 
-router.get("api/scraper", function (req, res) {
+router.get("/api/scraper", function (req, res) {
     // Make a request for the news section of ycombinator
     request("https://news.ycombinator.com/", function (error, response, html) {
         // Load the html body from request into cheerio
@@ -118,7 +119,7 @@ router.get("api/scraper", function (req, res) {
             // If this found element had both a title and a link
             if (title && link) {
                 // Insert the data in the scrapedData db
-                db.scrapedData.insert({
+                db.Article.create({
                     title: title,
                     link: link
                 },
