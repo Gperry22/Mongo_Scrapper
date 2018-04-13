@@ -20,11 +20,17 @@ $(document).ready(function() {
         console.log(scrape);
         if (scrape.length > 0) {
             for (let i = 0; i < scrape.length; i++) {
-                let id = scrape[i]._id;
+                let id = scrape[i]._id.toString();
+                console.log(typeof(id));
+                
                 let title = scrape[i].title;
                 let link = scrape[i].link;
-                let notebtn = "<button onclick=addNote(" + id + ") class='btn btn-primary'> Add Note </button>";
-                let delbtn  = "<button onclick=delete(" + id + ") class='btn btn-danger'> Delete </button>";
+                let input = "Save Article";
+                // let notebtn = "<button onclick=addNote(" + id + ") class='btn btn-primary'> Add Note </button>";
+                // let delbtn  = "<button onclick=delete(" + id + ") class='btn btn-danger'> Delete </button>";
+                let saveArticle = "<button onclick='saveTheArticle()' class='btn btn-danger'>" + input + "</button>";
+          
+             
                 $("#articles").append(`
                 
                 <div class="col-md-9 artbg text-center">
@@ -34,8 +40,8 @@ $(document).ready(function() {
                     <a href="${link}" target="_blank">${link}</a>
                 </div>
                 <div class="col-md-3 artbg text-center align-middle">
-                    ${notebtn}
-                    ${delbtn}
+                    ${saveArticle}
+
                 </div>
                     
 `);
@@ -48,6 +54,33 @@ $(document).ready(function() {
 
     });
   }
+
+  $("#home").on("click", function (event) {
+    event.preventDefault();
+      getScrapedArticles();
+  });
+
+  function saveTheArticle() {
+    console.log("HOLA");
+
+  }
+
+
+
+// function saveArticle(id){
+//   console.log(id);
+  
+//   $.ajax("/save/" + id, {
+//     type: "POST",
+//     data: id
+//   }).then(function (scrape) {
+//     console.log(scrape);
+//     // getScrapedArticles();
+//   });
+
+// }
+
+
 });
 
 
@@ -58,3 +91,5 @@ $(document).ready(function() {
 //       result.push(e.age);
 //     }
 //   });
+
+// <button type="submit" onclick="saveTheArticle(${id})" class="btn btn-danger">Save Article</button>

@@ -2,10 +2,17 @@
 extends layout
 //importing everything below into block content1 on layout.jade ===================================
 block content1
-  .row.navbg
+  nav.navbar.navbar-expand-lg.navbar-light.bg-light
+    .navbar-brand MONGO SCRAPER
     .container
-            button#scrape.btn.btn-primary Scrape Articles
-            button.btn.btn-primary.marleft Saved Articles
+      .collapse.navbar-collapse
+        ul.mr-auto
+        .navbar-nav
+          a#home.nav-item.nav-link.active(href='/')
+            | Home
+            span.sr-only (current)
+          a.nav-item.nav-link(href='') Articles
+          a#scrape.nav-item.nav-link(href='') Scrape
   img(src='images/newspaper2.jpg', alt='newspaper background').bgsize
   .container
     //- img(src='images/newspaper2.jpg', alt='newspaper background').bgsize.marbtn
