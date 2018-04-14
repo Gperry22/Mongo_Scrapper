@@ -11,12 +11,18 @@ block content1
           a#home.nav-item.nav-link.active(href='/')
             | Home
             span.sr-only (current)
-          a.nav-item.nav-link(href='') Articles
+          a#savedArts.nav-item.nav-link(href='') Saved Articles
           a#scrape.nav-item.nav-link(href='') Scrape
   img(src='images/newspaper2.jpg', alt='newspaper background').bgsize
   .container
     //- img(src='images/newspaper2.jpg', alt='newspaper background').bgsize.marbtn
-    .row#articlesss
+    .row#articles
+
+
+  #myModal.modal
+    .modal-content
+        span.close ×
+        #modalBody       
 
 
 

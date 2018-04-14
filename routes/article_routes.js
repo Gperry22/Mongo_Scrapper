@@ -70,6 +70,47 @@ router.get("/api/articles", function (req, res) {
         });
 });
 
+// Route for getting all saved Articles from the db
+router.get("/api/savedArticles", function (req, res) {
+    // Grab every document in the Articles collection
+    db.Article.find({saved:true})
+        .then(function (dbArticle) {
+            // If we were able to successfully find Articles, send them back to the client
+            res.json(dbArticle);
+        })
+        .catch(function (err) {
+            // If an error occurred, send it to the client
+            res.json(err);
+        });
+});
+
+//Route for Saving a article
+router.post("/save/:id", function (req, res) {
+    console.log(req.params.id);
+    
+    db.Article.findOneAndUpdate({_id:req.params.id}, { saved: true })
+    .then(function (dbArticle) {
+            res.send(req.params.id + " Updated to True");
+        })
+    .catch(function (err) {
+        res.json(err);
+    });
+})
+
+//Route for UNSaving a article
+router.post("/remove/:id", function (req, res) {
+    console.log(req.params.id);
+    
+    db.Article.findOneAndUpdate({_id:req.params.id}, { saved: false })
+    .then(function (dbArticle) {
+            res.send(req.params.id + " Updated to False");
+        })
+    .catch(function (err) {
+        res.json(err);
+    });
+})
+
+
 // Route for grabbing a specific Article by id, populate it with it's note
 router.get("/articles/:id", function (req, res) {
     // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
@@ -86,15 +127,6 @@ router.get("/articles/:id", function (req, res) {
         });
 });
 
-router.post("/save/:id", function (req, res) {
-    db.Article.findOneAndUpdate({id:req.params.id}, { saved: true })
-    .then(function (dbArticle) {
-            res.json(dbArticle);
-        })
-    .catch(function (err) {
-        res.json(err);
-    });
-})
 
 
 // Route for saving/updating an Article's associated Note
