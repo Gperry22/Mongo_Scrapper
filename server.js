@@ -41,7 +41,7 @@ mongoose.connect("mongodb://localhost/mongoScrapper", {
   // useMongoClient: true
 });
 
-mongoose.connect(MONGODB_URL)
+mongoose.connect(MONGODB_URI)
 
 // Start the server
 app.listen(PORT, function () {
