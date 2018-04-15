@@ -1,23 +1,5 @@
 $(document).ready(function () {
 
-  // Get the modal
-  var modal = document.getElementById('myModal');
-
-  // Get the <span> element that closes the modal
-  var span = document.getElementsByClassName("close")[0];
-
-  // When the user clicks on <span> (x), close the modal
-  span.onclick = function () {
-    modal.style.display = "none";
-  }
-
-  // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function (event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  }
-
   getScrapedArticles()
 
   $("#scrape").on("click", function (event) {
@@ -164,19 +146,21 @@ $(document).ready(function () {
 
 
   function addNote(id) {
-    $("#modalBody").empty();
-    modal.style.display = "block";
-    $("#modalBody").append(`
-      <div id="artId" class="text-center modal-content-head-img-bottom-space2">
+    $("#noteModal").empty();
+    $("#noteModal").append(`
+      <div id="artId" class="text-center">
       </div>
-      <h4 class="text-center">ADD NOTE</h4>
+      <h4 class="card-title text-center">ADD NOTE</h4>
       <div class="text-center">
-        <textarea id="notes" class="" type="text"  rows="4" cols="70"/>
+        <textarea id="notes" class="" type="text"/>
       </div>
       <div class="text-center">
         <button id="noteSubmit" class="btn btn-primary" type="submit">Submit Note</button>
         <button id="close"  class="btn btn-danger" type="submit">Cancel</button>
       </div>
+      </div>
+      </div>
+
       `);
 
     let passedId = $("#artId");
@@ -184,7 +168,7 @@ $(document).ready(function () {
   }
 
 
-  $("#myModal").on("click", "#noteSubmit", function (event) {
+  $("#noteModal").on("click", "#noteSubmit", function (event) {
     event.preventDefault();
     if ($('#notes').val()) {
 
@@ -195,6 +179,7 @@ $(document).ready(function () {
         url: "/notes/" + newId,
         data: { body: newNote }
       }).then(function (scrape) {
+        $("#noteModal").empty();
         modalAppearSaved("Note Added")
       });
     } else {
@@ -202,15 +187,15 @@ $(document).ready(function () {
     }
   })
 
-  $("#myModal").on("click", "#close", function (event) {
+  $("#noteModal").on("click", "#close", function (event) {
     event.preventDefault();
-    modal.style.display = "none";
+    $("#noteModal").empty();    
     getSavedArticlesFromDB()
   })
 
 
   $("#articles").on("click", ".viewNote", function (event) {
-    $("#modalBody").empty();
+    $("#noteModal").empty();
     event.preventDefault();
     let id = $(this).data("key");
     $.ajax({
@@ -226,16 +211,17 @@ $(document).ready(function () {
         let artDiv = "<div class='col-md-12 border-bottom marbtn1 colHeight'><h5>" + count + ": " + artNote + " <span><button id='deleteNote'  class='btn btn-danger float-right' type='submit' data-key='" + id + "' data-keyNote='" + noteId + "'>X</button></span></h5></div>"
         notes += artDiv;
       }
-      modal.style.display = "block";
-      $("#modalBody").append(`
+      $("#noteModal").append(`
         <div id="artId" class="text-center modal-content-head-img-bottom-space2">
         </div>
+        <div class='border'>
         <h2 class="text-center">Notes for Article:</h2>
         <div>
         ${notes}
         </div>
         <div class="text-center">
-          <button id="close"  class="btn btn-danger" type="submit">Cancel</button>
+          <button id="close"  class="btn btn-danger marbtn1" type="submit">Cancel</button>
+        </div>
         </div>
       `);
     });
@@ -263,26 +249,27 @@ $(document).ready(function () {
     let msg = message;
     modalUp(msg);
     setTimeout(() => {
-      modal.style.display = "none";
+      $('#myModal').modal('hide');
     }, 4000);
   }
 
 
 
   function modalUp(msg) {
-    $("#modalBody").empty();
-    modal.style.display = "block";
-    $("#modalBody").append(`
-      <div class="text-center modal-content-head-img-bottom-space2">
-      </div>
+
+    $('#myModal').modal('show');
+    $('#modMsg').empty();
+    $('#modMsg').append(
+      `
       <h4 class="text-center">${msg}</h4>
       `);
     setTimeout(() => {
-      modal.style.display = "none";
-    }, 4000);
+      $('#myModal').modal('hide');
+    }, 4000);    
   }
 
-  $("#myModal").on("click", "#deleteNote", function (event) {
+
+  $("#noteModal").on("click", "#deleteNote", function (event) {
     modalAppearSaved("Feature to be Added Soon!")
     // event.preventDefault();
     // let id = $(this).data("key");

@@ -11,24 +11,48 @@
   </head>
   <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="navbar-brand">MONGO SCRAPER</div>
-      <div class="collapse navbar-collapse">
-        <ul class="mr-auto">
-        </ul>
-        <div class="navbar-nav ">
-          <a id="home" class="nav-item nav-link active" href="/">Home
-            <span class="sr-only">(current)</span>
-          </a>
-          <a class="nav-item nav-link" href="">Articles</a>
-          <a class="nav-item nav-link" href="">Scrape</a>
+
+<div class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+  <!-- Modal -->
+  <!-- <div class="modal fade" id="myModal" role="dialog"> --> -->
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
-    </nav>
-
-    <input id="=notes" type="text">
-    <button id="noteSubmit" class="btn btn-bd-primary" type="submit">Submit Note</button>
-<button type="submit" onclick="saveTheArticle()" class="btn btn-danger">Save Article</button>
+  
+    </div>
+  </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
