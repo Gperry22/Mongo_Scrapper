@@ -1,3 +1,7 @@
+body {
+    background-image: url("../images/dust_scratches.png")
+}
+
 .bgsize {
     width: 100%;
     height: 600px;
@@ -15,10 +19,7 @@
 }
 
 .navbg {
-    background-color: lightgrey;
-    height: 80px;
-    margin: 0;
-    padding-top: 15px;
+    background-image: url("../images/dust_scratches.png")
 }
 
 .text-center-vert {
@@ -27,6 +28,23 @@
 
 .marleft {
     margin-left: 10px;
+}
+
+.marbtn1 {
+    margin-bottom: 10px;
+}
+
+.marbtm {
+    margin-bottom: 30px;
+}
+
+.colHeight {
+    height: 50px;
+}
+
+.colHeight1 {
+    height: 40px;
+    background-color: lightgray;
 }
 
 /* The Modal (background) */
@@ -61,7 +79,7 @@
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 40%;
 }
 
 /* The Close Button */
