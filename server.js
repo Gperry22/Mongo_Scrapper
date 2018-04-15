@@ -41,9 +41,7 @@ mongoose.connect("mongodb://localhost/mongoScrapper", {
   // useMongoClient: true
 });
 
-mongoose.connect("mongodb://<dbuser>:<dbpassword>@ds229465.mlab.com:29465/heroku_bl31fws6", {
-  // useMongoClient: true
-});
+mongoose.connect(MONGODB_URL)
 
 // Start the server
 app.listen(PORT, function () {
