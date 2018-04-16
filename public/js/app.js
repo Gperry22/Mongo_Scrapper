@@ -1,5 +1,7 @@
 $(document).ready(function () {
 
+  
+
   getScrapedArticles()
 
   $("#scrape").on("click", function (event) {
@@ -19,16 +21,16 @@ $(document).ready(function () {
     $("#articles").empty();
     $.ajax("/api/articles", { type: "GET" }).then(function (scrape) {
       console.log(scrape);
-      if (scrape.length > 0) {
+      if (scrape.length > 0) {        
         for (let i = 0; i < scrape.length; i++) {
           let id = scrape[i]._id.toString();
           let title = scrape[i].title;
           let link = scrape[i].link;
           let input = "";
           if (scrape[i].saved == false) {
-            input = "<button class='btn btn-danger saveArticle' data-key='" + id + "'>Save Article</button>";
+            input = "<button title='Saves Articles' class='btn btn-danger saveArticle' data-key='" + id + "'>Save Article</button>";
           } else {
-            input = "<button class='btn btn-primary' data-key='" + id + "'>Saved</button>";
+            input = "<button title='Takes you to Saved Articles' class='btn btn-primary savedBtn' data-key='" + id + "'>Saved</button>";
           }
           $("#articles").append(`                
             <div class="col-md-9 artbg text-center">
@@ -79,9 +81,9 @@ $(document).ready(function () {
           let link = savedArticles[i].link;
           let button = "";
           if (savedArticles[i].notes.length <= 0) {
-            button = "<button class='btn btn-success addNote' data-key='" + id + "'> Add Note</button >"
+            button = "<button title='Adds A note to this Article' class='btn btn-success addNote' data-key='" + id + "'> Add Note</button >"
           } else {
-            button = "<button class='btn btn-success addNote marbtn1' data-key='" + id + "'> Add Note</button ><button class='btn btn-success viewNote marleft marbtn1' data-key='" + id + "'> View Notes</button >"
+            button = "<button title='Adds A note to this Article' class='btn btn-success addNote marbtn1' data-key='" + id + "'> Add Note</button ><button title='Views notes for this Article' class='btn btn-success viewNote marleft marbtn1' data-key='" + id + "'> View Notes</button >"
           }
 
           $("#articles").append(`                
@@ -93,7 +95,7 @@ $(document).ready(function () {
               </div>
               <div class="col-md-3 artbg text-center align-middle">
               ${button}
-                <button class='btn btn-danger removeArticle' data-key='${id}'>Delete Article</button>
+                <button title='Removes this Article and All Notes from Saved Articles but does not delete from Scraped Articles' class='btn btn-danger removeArticle' data-key='${id}'>Delete Article</button>
               </div>                   
             `);
         }
@@ -120,6 +122,11 @@ $(document).ready(function () {
     }).then(function (scrape) {
       modalAppearScrape("Article Saved")
     });
+  });
+
+  $("#articles").on("click", ".savedBtn", function (event) {
+    $("#articles").empty();
+    getSavedArticlesFromDB()
   });
 
 
@@ -208,7 +215,7 @@ $(document).ready(function () {
         let noteId = articleAndNote.notes[i]._id;
         let artNote = articleAndNote.notes[i].body;
         let count = i + 1
-        let artDiv = "<div class='col-md-12 border-bottom marbtn1 colHeight'><h5>" + count + ": " + artNote + " <span><button id='deleteNote'  class='btn btn-danger float-right' type='submit' data-key='" + id + "' data-keyNote='" + noteId + "'>X</button></span></h5></div>"
+        let artDiv = "<div class='col-md-12 border-bottom marbtn1 colHeight'><h5>" + count + ": " + artNote + " <span><button title='Deletes this Note for this Article' id='deleteNote'  class='btn btn-danger float-right' type='submit' data-key='" + id + "' data-keyNote='" + noteId + "'>X</button></span></h5></div>"
         notes += artDiv;
       }
       $("#noteModal").append(`
@@ -228,13 +235,24 @@ $(document).ready(function () {
 
   })
 
+  $("#home").on("click", function () {
+    $("#noteModal").empty();
+  })
+
+  $("#savedArts").on("click", function () {
+    $("#noteModal").empty();
+  })
+
+  $("#scrape").on("click", function () {
+    $("#noteModal").empty();
+  })
 
   function modalAppearScrape(message) {
     let msg = message;
     modalUp(msg);
     setTimeout(() => {
       getScrapedArticles();
-    }, 4000);
+    }, 3000);
   }
 
   function modalAppearSaved(message) {
@@ -242,7 +260,7 @@ $(document).ready(function () {
     modalUp(msg);
     setTimeout(() => {
       getSavedArticlesFromDB();
-    }, 4000);
+    }, 3000);
   }
 
   function modalAppear(message) {
@@ -250,7 +268,7 @@ $(document).ready(function () {
     modalUp(msg);
     setTimeout(() => {
       $('#myModal').modal('hide');
-    }, 4000);
+    }, 3000);
   }
 
 
@@ -269,6 +287,9 @@ $(document).ready(function () {
   }
 
 
+
+
+
   $("#noteModal").on("click", "#deleteNote", function (event) {
     modalAppearSaved("Feature to be Added Soon!")
     // event.preventDefault();
@@ -282,7 +303,6 @@ $(document).ready(function () {
     //   });
 
   })
-
 
 
 

@@ -8,11 +8,11 @@ block content1
       .collapse.navbar-collapse
         ul.mr-auto
         .navbar-nav
-          a#home.nav-item.nav-link.active(href='/')
+          a#home(title='Takes you to All Scraped Articles').nav-item.nav-link.active(href='/')
             | Home
             span.sr-only (current)
-          a#savedArts.nav-item.nav-link(href='') Saved Articles 
-          a#scrape.nav-item.nav-link(href='') Scrape
+          a#savedArts(title='Takes you to All Saved Articles/Notes').nav-item.nav-link(href='') Saved Articles 
+          a#scrape(title='Scapes new Articles for you').nav-item.nav-link(href='') Scrape
   img(src='images/newspaper2.jpg', alt='newspaper background').bgsize.marbtm
   .container.marbtn1
     #noteModal
