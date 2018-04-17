@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-  
+
 
   getScrapedArticles()
 
@@ -16,12 +16,10 @@ $(document).ready(function () {
   });
 
 
-
   function getScrapedArticles() {
     $("#articles").empty();
     $.ajax("/api/articles", { type: "GET" }).then(function (scrape) {
-      console.log(scrape);
-      if (scrape.length > 0) {        
+      if (scrape.length > 0) {
         for (let i = 0; i < scrape.length; i++) {
           let id = scrape[i]._id.toString();
           let title = scrape[i].title;
@@ -134,57 +132,43 @@ $(document).ready(function () {
   $("#articles").on("click", ".removeArticle", function (event) {
     $("#articles").empty();
     let id = $(this).data("key");
-    console.log(this);   
     getArtInfo(id)
   });
 
 
 
-  function getArtInfo(passed_id){
+  function getArtInfo(passed_id) {
     let id = passed_id;
     $.ajax({
       type: "GET",
       url: "/articles/" + id,
     }).then(function (articleAndNote) {
-      for (let i = 0; i < articleAndNote.length; i++) {
+      for (let i = 0; i < articleAndNote.notes.length; i++) {
         let note = articleAndNote.notes[i]._id;
         $.ajax({
           type: "DELETE",
           url: "/artNoteDelete/" + note,
         }).then(function (scrape) {
-          console.log(scrape);
-        });        
-      }
-        $.ajax({
-          type: "POST",
-          url: "/remove/" + passed_id,
-        }).then(function (scrape) {
-          console.log(scrape);
-          $("#noteModal").empty();
-          modalAppearSaved("Saved Article Removed and All Notes Deleted")
         });
+      }
+      cleanArray(id)
     })
   }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  function cleanArray(id) {
+    $.ajax({
+      type: "POST",
+      url: "/remove/" + id,
+    }).then(function (scrape) {
+      $("#noteModal").empty();
+      modalAppearSaved("All Notes deleted and Save Article Unsaved!")
+    });
+  }
 
   $("#articles").on("click", ".addNote", function (event) {
     $("#articles").empty();
     let id = $(this).data("key");
-    console.log(id);
     addNote(id);
   });
 
@@ -233,7 +217,7 @@ $(document).ready(function () {
 
   $("#noteModal").on("click", "#close", function (event) {
     event.preventDefault();
-    $("#noteModal").empty();    
+    $("#noteModal").empty();
     getSavedArticlesFromDB()
   })
 
@@ -246,7 +230,6 @@ $(document).ready(function () {
       type: "GET",
       url: "/articles/" + id,
     }).then(function (articleAndNote) {
-      console.log(articleAndNote);
       let notes = "<div class='row'></div>"
       for (let i = 0; i < articleAndNote.notes.length; i++) {
         let noteId = articleAndNote.notes[i]._id;
@@ -319,34 +302,32 @@ $(document).ready(function () {
       `);
     setTimeout(() => {
       $('#myModal').modal('hide');
-    }, 4000);    
+    }, 4000);
   }
 
   $("#noteModal").on("click", "#deleteNote", function (event) {
     event.preventDefault();
-    let id = $(this).data("key");  
+    let id = $(this).data("key");
     let noteId = $(this).data("keynote");
-    
-      $.ajax({
-        type: "DELETE",
-        url: "/artNoteDelete/" + noteId,
-      }).then(function (scrape) {
-        console.log(scrape);  
-        removeNoteFromArray(id, noteId)     
-      });
+
+    $.ajax({
+      type: "DELETE",
+      url: "/artNoteDelete/" + noteId,
+    }).then(function (scrape) {
+      removeNoteFromArray(id, noteId)
+    });
   })
 
-  function removeNoteFromArray(id, noteId){
+  function removeNoteFromArray(id, noteId) {
     $.ajax({
       type: 'POST',
       url: "/arrayNoteDelete/" + id + '/' + noteId,
     })
-    .then(function(scrape){
-      console.log(scrape); 
-      $("#noteModal").empty();      
-      modalAppearSaved("Note Deleted")
+      .then(function (scrape) {
+        $("#noteModal").empty();
+        modalAppearSaved("Note Deleted")
 
-    })
+      })
   }
 });
 
