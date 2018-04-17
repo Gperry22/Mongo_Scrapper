@@ -115,29 +115,14 @@ router.post("/save/:id", function (req, res) {
         });
 })
 
-//Route for UNSaving a article
-router.post("/remove/:id", function (req, res) {
-    console.log(req.params.id);
-
-    db.Article.findOneAndUpdate({ _id: req.params.id }, { saved: false })
-        .then(function (dbArticle) {
-            res.send(req.params.id + " Updated to False");
-        })
-        .catch(function (err) {
-            res.json(err);
-        });
-})
-
 
 
 // Route for saving/updating an Note and linking an Article's associated Note
 router.post("/notes/:id", function (req, res) {
     // Create a new note and pass the req.body to the entry
     db.Note.create(req.body)
-
         .then(function (dbNote) {
             var id = mongoose.Types.ObjectId(req.params.id);
-
             // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
             // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
             // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
@@ -153,6 +138,32 @@ router.post("/notes/:id", function (req, res) {
         });
 });
 
+//route to delete note
+router.delete("/artNoteDelete/:noteId/", function (req, res) {
+    var noteId = mongoose.Types.ObjectId(req.params.noteId);
+    db.Note.remove({ _id: noteId })
+        .then(function () {
+            res.send(req.params.noteId + " Remove");
+        })
+        .catch(function (err) {
+            res.json(err);
+        });
+    })
+
+//route to pull note Object for Articles note array
+router.post("/arrayNoteDelete/:id/:noteId", function (req, res) {
+    var id = mongoose.Types.ObjectId(req.params.id); 
+    var noteId = mongoose.Types.ObjectId(req.params.noteId);
+    console.log('Hya', id);
+    console.log('Hya', noteId);
+    db.Article.update({ _id: id }, { $pull: { notes: noteId } })
+        .then(function () { 
+            res.send(req.params.noteId + " Pulled") 
+        })                  
+        .catch(function (err) {
+            res.json(err);
+        });
+})
 
 
 // Route for grabbing a specific Article by id, populate it with it's note
@@ -171,33 +182,21 @@ router.get("/articles/:id", function (req, res) {
         });
 });
 
-//Route for remove a note from a article
-// router.post("/artNoteDelete/:id/:noteId", function (req, res) {
-//     console.log(req.params.id);
-//     var id = mongoose.Types.ObjectId(req.params.id);
-//     var noteId = mongoose.Types.ObjectId(req.params.noteId);
 
-//     db.Article.findOneAndUpdate({ _id: id}, { $pull: { notes: noteId } })
+//Route for UNSaving a article and Removing all notes
+router.post("/remove/:id", function (req, res) {
+    console.log(req.params.id);
+    var id = mongoose.Types.ObjectId(req.params.id);
+    db.Article.findOneAndUpdate({ _id: id }, { saved: false })
+        .then(function (dbArticle) {
+            db.Article.update({ _id: id }, { $set: { notes: [] } })
+                .then(function () {
+            res.send(req.params.id + " Unsaved and Removed all Notes");
+        })
+        .catch(function (err) {
+            res.json(err);
+        });
+    })
 
-//         .then(function (dbArticle) {
-//             db.note.deleteOne({ _id: noteId })
-//             res.send(req.params.id + " Updated to False");
-//         })
-//         .catch(function (err) {
-//             res.json(err);
-//         });
-// })
 
-
-// router.delete("/artNoteDelete/:id", function (req, res) {
-//     console.log(req.params.id);
-//     var id = mongoose.Types.ObjectId(req.params.id);
-
-//     db.Article.findOneAndUpdate({ _id: id }, { $pull: { notes: noteId } })
-//         .then(function (dbArticle) {
-//             res.send(req.params.id + " Updated to True");
-//         })
-//         .catch(function (err) {
-//             res.json(err);
-//         });
-// })
+})

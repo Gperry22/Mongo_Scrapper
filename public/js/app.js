@@ -95,7 +95,7 @@ $(document).ready(function () {
               </div>
               <div class="col-md-3 artbg text-center align-middle">
               ${button}
-                <button title='Removes this Article and All Notes from Saved Articles but does not delete from Scraped Articles' class='btn btn-danger removeArticle' data-key='${id}'>Delete Article</button>
+                <button title='Removes this Article from your Saved Articles and deletes all associated  Notes but does not delete this article from Scraped Articles' class='btn btn-danger removeArticle' data-key='${id}'>Delete Article</button>
               </div>                   
             `);
         }
@@ -134,14 +134,51 @@ $(document).ready(function () {
   $("#articles").on("click", ".removeArticle", function (event) {
     $("#articles").empty();
     let id = $(this).data("key");
-    $.ajax({
-      type: "POST",
-      url: "/remove/" + id,
-      data: id
-    }).then(function (scrape) {
-      modalAppearSaved("Saved Article Removed")
-    });
+    console.log(this);   
+    getArtInfo(id)
   });
+
+
+
+  function getArtInfo(passed_id){
+    let id = passed_id;
+    $.ajax({
+      type: "GET",
+      url: "/articles/" + id,
+    }).then(function (articleAndNote) {
+      for (let i = 0; i < articleAndNote.length; i++) {
+        let note = articleAndNote.notes[i]._id;
+        $.ajax({
+          type: "DELETE",
+          url: "/artNoteDelete/" + note,
+        }).then(function (scrape) {
+          console.log(scrape);
+        });        
+      }
+        $.ajax({
+          type: "POST",
+          url: "/remove/" + passed_id,
+        }).then(function (scrape) {
+          console.log(scrape);
+          $("#noteModal").empty();
+          modalAppearSaved("Saved Article Removed and All Notes Deleted")
+        });
+    })
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   $("#articles").on("click", ".addNote", function (event) {
@@ -215,7 +252,7 @@ $(document).ready(function () {
         let noteId = articleAndNote.notes[i]._id;
         let artNote = articleAndNote.notes[i].body;
         let count = i + 1
-        let artDiv = "<div class='col-md-12 border-bottom marbtn1 colHeight'><h5>" + count + ": " + artNote + " <span><button title='Deletes this Note for this Article' id='deleteNote'  class='btn btn-danger float-right' type='submit' data-key='" + id + "' data-keyNote='" + noteId + "'>X</button></span></h5></div>"
+        let artDiv = "<div class='col-md-12 border-bottom marbtn1 colHeight'><h5>" + count + ": " + artNote + " <span><button title='Deletes this Note for this Article' id='deleteNote'  class='btn btn-danger float-right' type='submit' data-key='" + id + "' data-keynote='" + noteId + "'>X</button></span></h5></div>"
         notes += artDiv;
       }
       $("#noteModal").append(`
@@ -232,7 +269,6 @@ $(document).ready(function () {
         </div>
       `);
     });
-
   })
 
   $("#home").on("click", function () {
@@ -286,28 +322,32 @@ $(document).ready(function () {
     }, 4000);    
   }
 
-
-
-
-
   $("#noteModal").on("click", "#deleteNote", function (event) {
-    modalAppearSaved("Feature to be Added Soon!")
-    // event.preventDefault();
-    // let id = $(this).data("key");
-    // let noteId = $(this).data("keyNote");
-    //   $.ajax({
-    //     type: "DELETE",
-    //     url: "/artNoteDelete/" + id + noteId,
-    //   }).then(function (scrape) {
-    //     modalAppearSaved("Note Deleted!")
-    //   });
-
+    event.preventDefault();
+    let id = $(this).data("key");  
+    let noteId = $(this).data("keynote");
+    
+      $.ajax({
+        type: "DELETE",
+        url: "/artNoteDelete/" + noteId,
+      }).then(function (scrape) {
+        console.log(scrape);  
+        removeNoteFromArray(id, noteId)     
+      });
   })
 
+  function removeNoteFromArray(id, noteId){
+    $.ajax({
+      type: 'POST',
+      url: "/arrayNoteDelete/" + id + '/' + noteId,
+    })
+    .then(function(scrape){
+      console.log(scrape); 
+      $("#noteModal").empty();      
+      modalAppearSaved("Note Deleted")
 
-
-
-
+    })
+  }
 });
 
 
